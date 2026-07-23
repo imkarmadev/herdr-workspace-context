@@ -1,0 +1,94 @@
+id = "imkarmadev.workspace-context"
+name = "Workspace Context"
+version = "0.1.0"
+min_herdr_version = "0.7.5"
+description = "Durable workspace activity, shared context, agent status, and evidence-based daily reports"
+platforms = ["macos", "linux"]
+
+[[actions]]
+id = "start-day"
+title = "Workspace Context: start workday"
+contexts = ["workspace"]
+command = ["node", "src/action.mjs", "start-day"]
+
+[[actions]]
+id = "stop-day"
+title = "Workspace Context: stop workday"
+contexts = ["workspace"]
+command = ["node", "src/action.mjs", "stop-day"]
+
+[[actions]]
+id = "generate-report"
+title = "Workspace Context: generate daily report"
+contexts = ["workspace"]
+command = ["node", "src/action.mjs", "generate-report"]
+
+[[actions]]
+id = "refresh-context"
+title = "Workspace Context: refresh shared context"
+contexts = ["workspace"]
+command = ["node", "src/action.mjs", "refresh-context"]
+
+[[events]]
+on = "workspace.created"
+command = ["node", "src/event.mjs"]
+
+[[events]]
+on = "workspace.updated"
+command = ["node", "src/event.mjs"]
+
+[[events]]
+on = "workspace.renamed"
+command = ["node", "src/event.mjs"]
+
+[[events]]
+on = "workspace.closed"
+command = ["node", "src/event.mjs"]
+
+[[events]]
+on = "worktree.created"
+command = ["node", "src/event.mjs"]
+
+[[events]]
+on = "worktree.opened"
+command = ["node", "src/event.mjs"]
+
+[[events]]
+on = "worktree.removed"
+command = ["node", "src/event.mjs"]
+
+[[events]]
+on = "pane.agent_detected"
+command = ["node", "src/event.mjs"]
+
+[[events]]
+on = "pane.agent_status_changed"
+command = ["node", "src/event.mjs"]
+
+[[events]]
+on = "pane.exited"
+command = ["node", "src/event.mjs"]
+
+[[events]]
+on = "pane.closed"
+command = ["node", "src/event.mjs"]
+
+[[panes]]
+id = "dashboard"
+title = "Workspace Context"
+placement = "overlay"
+command = ["node", "src/dashboard.mjs"]
+
+[[panes]]
+id = "add-note"
+title = "Add workspace note"
+placement = "popup"
+width = "80%"
+height = 16
+command = ["node", "src/note.mjs"]
+
+[[panes]]
+id = "daily-report"
+title = "Daily report"
+placement = "overlay"
+command = ["node", "src/report-view.mjs"]
