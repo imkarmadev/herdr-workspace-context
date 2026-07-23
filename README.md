@@ -75,6 +75,36 @@ herdr plugin action invoke imkarmadev.workspace-context.generate-report
 | `r` | Generate today's report |
 | `q` / `Esc` | Close |
 
+## Recommended shortcuts
+
+Add these custom commands to the Herdr configuration:
+
+```toml
+[[keys.command]]
+key = "prefix+d"
+type = "plugin_action"
+command = "imkarmadev.workspace-context.open-dashboard"
+description = "open Workspace Context dashboard"
+
+[[keys.command]]
+key = "prefix+shift+a"
+type = "plugin_action"
+command = "imkarmadev.workspace-context.open-note"
+description = "add Workspace Context note"
+
+[[keys.command]]
+key = "prefix+shift+e"
+type = "plugin_action"
+command = "imkarmadev.workspace-context.open-report"
+description = "open Workspace Context daily report"
+```
+
+With Herdr's default prefix, press `Ctrl+B`, release it, then press:
+
+- `D` for the dashboard
+- `Shift+A` for a note
+- `Shift+E` for the daily report
+
 ## What is persisted
 
 Herdr provides a private state directory for the plugin. Each workspace gets:

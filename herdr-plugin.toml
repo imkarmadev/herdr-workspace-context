@@ -1,9 +1,27 @@
 id = "imkarmadev.workspace-context"
 name = "Workspace Context"
-version = "0.1.0"
+version = "0.1.1"
 min_herdr_version = "0.7.5"
 description = "Durable workspace activity, shared context, agent status, and evidence-based daily reports"
 platforms = ["macos", "linux"]
+
+[[actions]]
+id = "open-dashboard"
+title = "Workspace Context: open dashboard"
+contexts = ["workspace"]
+command = ["node", "src/action.mjs", "open-dashboard"]
+
+[[actions]]
+id = "open-note"
+title = "Workspace Context: add note"
+contexts = ["workspace"]
+command = ["node", "src/action.mjs", "open-note"]
+
+[[actions]]
+id = "open-report"
+title = "Workspace Context: open daily report"
+contexts = ["workspace"]
+command = ["node", "src/action.mjs", "open-report"]
 
 [[actions]]
 id = "start-day"
