@@ -52,6 +52,7 @@ test("persists tracking, notes, todos, agents, and shared context", () => {
   assert.equal(state.agents["w1:p2"].status, "working");
 
   const events = readEvents(workspace.id, env);
+  assert.ok(events.every((event) => !Number.isNaN(new Date(event.at).getTime())));
   assert.deepEqual(
     events.map((event) => event.type),
     [

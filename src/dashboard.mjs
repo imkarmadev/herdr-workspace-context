@@ -10,7 +10,6 @@ import {
   startDay,
   stopDay,
   toggleTodo,
-  workspaceDir,
 } from "./lib/state.mjs";
 
 const workspace = resolveWorkspace(process.env);
@@ -67,16 +66,16 @@ function render() {
   const width = Math.max(60, stdout.columns || 100);
   const lines = [];
   lines.push(
-    `${color.bold}${color.green} Workspace Context ${color.reset}${color.dim}│${color.reset} ${
-      state.workspace.label ?? workspace.id
-    }`,
+    `${color.bold}${color.green}${state.workspace.label ?? workspace.id}${color.reset}` +
+      `  ${color.dim}${agents.length} agent${agents.length === 1 ? "" : "s"}${color.reset}`,
   );
   lines.push(
     `${color.dim}${truncate(state.workspace.cwd ?? "No directory", width - 2)}${color.reset}`,
   );
   lines.push(
-    `${state.tracking.active ? `${color.green}● tracking${color.reset}` : `${color.gray}○ stopped${color.reset}`}  ` +
-      `${color.dim}${workspaceDir(workspace.id)}${color.reset}`,
+    state.tracking.active
+      ? `${color.green}● workday tracking${color.reset}`
+      : `${color.gray}○ workday stopped${color.reset}`,
   );
   lines.push("");
   lines.push(`${color.bold}AGENTS${color.reset} ${color.dim}${agents.length}${color.reset}`);
@@ -112,10 +111,13 @@ function render() {
     lines.push(`  ${color.dim}No meaningful activity captured yet.${color.reset}`);
   } else {
     for (const event of visibleEvents.slice(0, 6)) {
-      const time = new Date(event.at).toLocaleTimeString([], {
-        hour: "2-digit",
-        minute: "2-digit",
-      });
+      const parsedAt = new Date(event.at);
+      const time = Number.isNaN(parsedAt.getTime())
+        ? "earlier"
+        : parsedAt.toLocaleTimeString([], {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
       lines.push(
         `  ${color.dim}${time}${color.reset}  ${truncate(event.label, width - 12)}`,
       );

@@ -133,7 +133,7 @@ export function buildReport({
   const effectiveEnd = date < bounds.end ? date : bounds.end;
   const events = readEvents(workspace.id, env).filter((event) => {
     const at = new Date(event.at);
-    return at >= bounds.start && at < bounds.end;
+    return !Number.isNaN(at.getTime()) && at >= bounds.start && at < bounds.end;
   });
   const tracking = trackingSummary(state, bounds, effectiveEnd);
   const since =

@@ -127,9 +127,9 @@ function acquireLock(workspaceId, env) {
 
 function appendEvent(workspaceId, event, env) {
   const normalized = {
+    ...event,
     id: event.id ?? randomUUID(),
     at: event.at ?? new Date().toISOString(),
-    ...event,
   };
   appendFileSync(eventsPath(workspaceId, env), `${JSON.stringify(normalized)}\n`, {
     encoding: "utf8",

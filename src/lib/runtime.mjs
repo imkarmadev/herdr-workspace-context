@@ -86,9 +86,21 @@ export function resolveWorkspace(env = process.env, eventData = null) {
     context?.workspace?.workspace_id ??
     context?.workspace?.id;
 
+  const flatContext = id
+    ? {
+        workspace_id: id,
+        label: context?.workspace_label ?? null,
+        cwd:
+          context?.workspace_cwd ??
+          context?.focused_pane_cwd ??
+          context?.cwd ??
+          null,
+      }
+    : null;
   const direct =
     workspaceCandidate(eventData) ??
     workspaceCandidate(context) ??
+    flatContext ??
     normalizeWorkspace(eventData?.workspace, id);
   let workspace = normalizeWorkspace(direct, id);
 
@@ -101,6 +113,33 @@ export function resolveWorkspace(env = process.env, eventData = null) {
         label: live.label ?? workspace?.label ?? null,
         cwd: live.cwd ?? workspace?.cwd ?? null,
       };
+    }
+  }
+
+  if (id) {
+    const response = runHerdr(["pane", "list", "--workspace", id], env);
+    const panes = findObjects(
+      response.json,
+      (item) =>
+        item.workspace_id === id &&
+        typeof item.pane_id === "string" &&
+        (typeof item.foreground_cwd === "string" ||
+          typeof item.cwd === "string"),
+    );
+    const realPanes = panes.filter(
+      (item) =>
+        item.pane_id !== env.HERDR_PANE_ID &&
+        (!env.HERDR_PLUGIN_ROOT ||
+          (item.foreground_cwd !== env.HERDR_PLUGIN_ROOT &&
+            item.cwd !== env.HERDR_PLUGIN_ROOT)),
+    );
+    const candidates = realPanes.length ? realPanes : panes;
+    const pane =
+      candidates.find((item) => item.focused) ??
+      candidates.find((item) => item.agent) ??
+      candidates[0];
+    if (pane) {
+      workspace.cwd = pane.foreground_cwd ?? pane.cwd ?? null;
     }
   }
 
