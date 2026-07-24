@@ -26,10 +26,32 @@ test("daily report contains actual work evidence, not only tracking events", () 
   };
 
   startDay(workspace, env, new Date("2026-07-23T06:26:00.000Z"));
-  addNote(workspace, "review", "Reviewed WhatsApp allowed-setting changes", env);
-  addNote(workspace, "decision", "Keep validation in the API boundary", env);
-  const task = addTodo(workspace, "Review SD-2921", env).state.todos[0];
-  toggleTodo(workspace, task.id, env);
+  addNote(
+    workspace,
+    "review",
+    "Reviewed WhatsApp allowed-setting changes",
+    env,
+    new Date("2026-07-23T06:40:00.000Z"),
+  );
+  addNote(
+    workspace,
+    "decision",
+    "Keep validation in the API boundary",
+    env,
+    new Date("2026-07-23T06:50:00.000Z"),
+  );
+  const task = addTodo(
+    workspace,
+    "Review SD-2921",
+    env,
+    new Date("2026-07-23T06:55:00.000Z"),
+  ).state.todos[0];
+  toggleTodo(
+    workspace,
+    task.id,
+    env,
+    new Date("2026-07-23T07:25:00.000Z"),
+  );
   recordAgentStatus(
     workspace,
     {

@@ -5,7 +5,7 @@ import { join } from "node:path";
 import { spawnSync } from "node:child_process";
 import test from "node:test";
 
-test("shortcut action opens the dashboard in its invoking workspace", () => {
+test("shortcut action opens the dashboard against Herdr's active pane", () => {
   const directory = mkdtempSync(join(tmpdir(), "workspace-context-shortcut-"));
   const mockHerdr = join(directory, "herdr");
   const argsFile = join(directory, "args.txt");
@@ -49,10 +49,6 @@ test("shortcut action opens the dashboard in its invoking workspace", () => {
     "imkarmadev.workspace-context",
     "--entrypoint",
     "dashboard",
-    "--workspace",
-    "w7",
     "--focus",
-    "--target-pane",
-    "w7:p3",
   ]);
 });

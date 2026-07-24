@@ -20,13 +20,8 @@ function openPane(entrypoint) {
     pluginId,
     "--entrypoint",
     entrypoint,
-    "--workspace",
-    workspace.id,
     "--focus",
   ];
-  if (process.env.HERDR_PANE_ID) {
-    args.push("--target-pane", process.env.HERDR_PANE_ID);
-  }
   const result = runHerdr(args);
   if (!result.ok) {
     throw new Error(result.stderr.trim() || `Could not open ${entrypoint}`);

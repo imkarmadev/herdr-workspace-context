@@ -200,13 +200,20 @@ export function stopDay(workspace, env = process.env, at = new Date()) {
   );
 }
 
-export function addNote(workspace, category, text, env = process.env) {
+export function addNote(
+  workspace,
+  category,
+  text,
+  env = process.env,
+  at = new Date(),
+) {
   const trimmed = text.trim();
   if (!trimmed) throw new Error("Note cannot be empty.");
   return mutateState(
     workspace,
     () => ({
       type: "note",
+      at: at.toISOString(),
       category,
       text: trimmed,
     }),
@@ -214,36 +221,47 @@ export function addNote(workspace, category, text, env = process.env) {
   );
 }
 
-export function addTodo(workspace, text, env = process.env) {
+export function addTodo(workspace, text, env = process.env, at = new Date()) {
   const trimmed = text.trim();
   if (!trimmed) throw new Error("Task cannot be empty.");
   const todo = {
     id: randomUUID(),
     text: trimmed,
     done: false,
-    createdAt: new Date().toISOString(),
+    createdAt: at.toISOString(),
     completedAt: null,
   };
   return mutateState(
     workspace,
     (state) => {
       state.todos.push(todo);
-      return { type: "todo_added", todoId: todo.id, text: todo.text };
+      return {
+        type: "todo_added",
+        at: at.toISOString(),
+        todoId: todo.id,
+        text: todo.text,
+      };
     },
     env,
   );
 }
 
-export function toggleTodo(workspace, todoId, env = process.env) {
+export function toggleTodo(
+  workspace,
+  todoId,
+  env = process.env,
+  at = new Date(),
+) {
   return mutateState(
     workspace,
     (state) => {
       const todo = state.todos.find((item) => item.id === todoId);
       if (!todo) return null;
       todo.done = !todo.done;
-      todo.completedAt = todo.done ? new Date().toISOString() : null;
+      todo.completedAt = todo.done ? at.toISOString() : null;
       return {
         type: todo.done ? "todo_completed" : "todo_reopened",
+        at: at.toISOString(),
         todoId: todo.id,
         text: todo.text,
       };

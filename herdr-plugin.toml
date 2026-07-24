@@ -1,6 +1,6 @@
 id = "imkarmadev.workspace-context"
 name = "Workspace Context"
-version = "0.1.1"
+version = "0.1.2"
 min_herdr_version = "0.7.5"
 description = "Durable workspace activity, shared context, agent status, and evidence-based daily reports"
 platforms = ["macos", "linux"]
